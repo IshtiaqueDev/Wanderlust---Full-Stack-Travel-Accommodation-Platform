@@ -4,8 +4,11 @@ const mongoose=require("mongoose");
 const Listing=require("./models/Listing")
 const path=require("path");
 const methodOverride=require("method-override");
+const ejsMate=require("ejs-mate");
 const port=8080;
 
+app.use(express.static(path.join(__dirname,"/public")));
+app.engine("ejs",ejsMate);
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"))
 app.use(express.urlencoded({extended:true}));
@@ -54,7 +57,7 @@ app.get("/listings",async(req,res)=>{
 app.get("/listings/:id/",async(req,res)=>{
     let id=req.params.id;
     let list=await Listing.findById(id);
-    console.log(list);   
+    //console.log(list);   
     // res.send(list) 
     res.render("./listings/show.ejs",{list});
 })
