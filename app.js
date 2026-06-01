@@ -67,12 +67,16 @@ app.get("/listings/new/add",(req,res)=>{
 })
 
 //Post Route
-app.post("/listings",async(req,res)=>{
-    const newListing=new Listing(req.body.listing);
+app.post("/listings",async(req,res,next)=>{
+   try{
+     const newListing=new Listing(req.body.listing);
     await newListing.save().then((res)=>{
         console.log(res);
     });
     res.redirect("/listings");
+   }catch(err){
+    next(err);
+   }
 })
 
 
@@ -92,6 +96,10 @@ app.put("/listings/:id/edits",async(req,res)=>{
     res.redirect("/listings");
 })
 
+
+app.use((err,req,res,next)=>{
+    res.send("Something Went Wrong !");
+})
 
 //Delete Route
 app.delete("/listings/:id/delete",async(req,res)=>{
