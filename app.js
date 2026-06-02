@@ -5,6 +5,9 @@ const Listing=require("./models/Listing")
 const path=require("path");
 const methodOverride=require("method-override");
 const ejsMate=require("ejs-mate");
+const wrapAsync=require("./utils/wrapAsync.js");
+const ExpressError=require("./utils/ExpressError.js");
+const {listingSchema}=require("./Schema.js");
 const port=8080;
 
 app.use(express.static(path.join(__dirname,"/public")));
@@ -22,9 +25,6 @@ async function main() {
     await mongoose.connect("mongodb://127.0.0.1:27017/wanderlust")
 }
 
-app.listen(port,()=>{
-    console.log("Server is listening to port 8080");
-})
 
 app.get("/",(req,res)=>{
     res.send("Hi Iam Root!");
@@ -48,62 +48,73 @@ app.get("/",(req,res)=>{
 // })
 
 // Index Route 
-app.get("/listings",async(req,res)=>{
+app.get("/listings",wrapAsync(async(req,res)=>{
     const allListings=await Listing.find({});
     res.render("./listings/index.ejs",{allListings});
-})
+}))
 
 //Show Route
-app.get("/listings/:id/",async(req,res)=>{
+app.get("/listings/:id/",wrapAsync(async(req,res)=>{
     let id=req.params.id;
     let list=await Listing.findById(id);
     //console.log(list);   
     // res.send(list) 
     res.render("./listings/show.ejs",{list});
-})
+}))
 
 app.get("/listings/new/add",(req,res)=>{
     res.render("./listings/form.ejs");
 })
 
-//Post Route
-app.post("/listings",async(req,res,next)=>{
-   try{
+//CREATE Route
+app.post("/listings",wrapAsync(async(req,res,next)=>{
+    let result=listingSchema.validate(req.body);
+    console.log(result);
      const newListing=new Listing(req.body.listing);
-    await newListing.save().then((res)=>{
-        console.log(res);
-    });
+    await newListing.save();
     res.redirect("/listings");
-   }catch(err){
-    next(err);
-   }
-})
+}));
 
 
 //Update Route
-app.get("/listings/:id/edit",async(req,res)=>{
+app.get("/listings/:id/edit",wrapAsync(async(req,res)=>{
     let id=req.params.id;
     //console.log(id);
    let list= await Listing.find({_id:id});
    //console.log(list[0]);
     res.render("./listings/edit.ejs",{list});
-})
+}))
 
 //Edited Data (Updation)
-app.put("/listings/:id/edits",async(req,res)=>{
+app.put("/listings/:id/edits",wrapAsync(async(req,res)=>{
     let {id}=req.params;
    await Listing.findByIdAndUpdate(id,{...req.body.listing})
     res.redirect("/listings");
-})
+}))
 
 
-app.use((err,req,res,next)=>{
-    res.send("Something Went Wrong !");
-})
+
 
 //Delete Route
-app.delete("/listings/:id/delete",async(req,res)=>{
+app.delete("/listings/:id/delete",wrapAsync(async(req,res)=>{
     let id=req.params.id;
     await Listing.findByIdAndDelete(id);
     res.redirect("/listings")
+}));
+
+
+app.use((req,res,next)=>{
+    next(new ExpressError(404,"Page not Found!"));
 });
+
+
+app.use((err,req,res,next)=>{
+    let {status=500,message="Something Went Wrong!"}=err;
+    res.status(status).render("error.ejs",{err});
+    // res.status(status).send(message);
+})
+
+
+app.listen(port,()=>{
+    console.log("Server is listening to port 8080");
+})
