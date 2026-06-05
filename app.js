@@ -25,6 +25,17 @@ async function main() {
     await mongoose.connect("mongodb://127.0.0.1:27017/wanderlust")
 }
 
+const validateListing=(req,res,next)=>{
+    let {error}=listingSchema.validate(req.body);
+    if(error){
+        let errMsg=error.details.map((el)=>el.message).join(",");
+        throw new ExpressError(400,errMsg);
+    }else{
+        next();
+    }
+}
+
+
 
 app.get("/",(req,res)=>{
     res.send("Hi Iam Root!");
@@ -67,9 +78,7 @@ app.get("/listings/new/add",(req,res)=>{
 })
 
 //CREATE Route
-app.post("/listings",wrapAsync(async(req,res,next)=>{
-    let result=listingSchema.validate(req.body);
-    console.log(result);
+app.post("/listings",validateListing,wrapAsync(async(req,res,next)=>{
      const newListing=new Listing(req.body.listing);
     await newListing.save();
     res.redirect("/listings");
@@ -77,7 +86,7 @@ app.post("/listings",wrapAsync(async(req,res,next)=>{
 
 
 //Update Route
-app.get("/listings/:id/edit",wrapAsync(async(req,res)=>{
+app.get("/listings/:id/edit",validateListing,wrapAsync(async(req,res)=>{
     let id=req.params.id;
     //console.log(id);
    let list= await Listing.find({_id:id});
