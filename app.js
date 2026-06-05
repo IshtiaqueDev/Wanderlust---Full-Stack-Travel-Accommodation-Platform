@@ -7,6 +7,7 @@ const methodOverride=require("method-override");
 const ejsMate=require("ejs-mate");
 const wrapAsync=require("./utils/wrapAsync.js");
 const ExpressError=require("./utils/ExpressError.js");
+const Joi=require("joi");
 const {listingSchema}=require("./Schema.js");
 const port=8080;
 
