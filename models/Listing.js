@@ -22,15 +22,14 @@ const listingSchema=new mongoose.Schema({
                 default:DEFAULT_IMAGE,
                 set: (v) => (!v || v === "") ? DEFAULT_IMAGE : v
             },
-     },price:{
-        type:Number
-    },location:{
-        type:String
-    },country:{
-        type:String
-    }
+     },price:Number,
+    location:String,
+    country:String,
+    reviews:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Review"
+    }]
 })
-
 
 const Listing=mongoose.model("Listing",listingSchema);
     module.exports=Listing;
