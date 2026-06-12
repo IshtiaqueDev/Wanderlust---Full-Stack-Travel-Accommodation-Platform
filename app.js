@@ -8,6 +8,7 @@ const ejsMate=require("ejs-mate");
 const wrapAsync=require("./utils/wrapAsync.js");
 const ExpressError=require("./utils/ExpressError.js");
 const Joi=require("joi");
+const Review=require("./models/review.js");
 const {listingSchema}=require("./Schema.js");
 const port=8080;
 
@@ -111,6 +112,27 @@ app.delete("/listings/:id/delete",wrapAsync(async(req,res)=>{
     await Listing.findByIdAndDelete(id);
     res.redirect("/listings")
 }));
+
+
+//Adding Reviews
+app.post("/listings/:id/reviews",async(req,res)=>{
+    const newReview=new Review(req.body.review);
+    let result=await newReview.save();
+    console.log(result);
+    //console.log(review);
+    let id=req.params.id;
+    //console.log(id);
+    let listing=await Listing.findById(id);
+    listing.reviews.push(result._id);
+    console.log(listing);
+    // console.log(result);
+        // const review=new Review({
+        //     comment=,
+        //     rating=,
+        // }
+        // listings    
+});
+
 
 
 app.use((req,res,next)=>{
