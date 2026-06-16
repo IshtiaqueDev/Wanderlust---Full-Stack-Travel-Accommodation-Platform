@@ -8,6 +8,7 @@ const ejsMate=require("ejs-mate");
 const wrapAsync=require("./utils/wrapAsync.js");
 const ExpressError=require("./utils/ExpressError.js");
 const Joi=require("joi");
+const {reviewSchema}=require("./Schema.js")
 const Review=require("./models/review.js");
 const {listingSchema}=require("./Schema.js");
 const port=8080;
@@ -37,6 +38,17 @@ const validateListing=(req,res,next)=>{
     }
 }
 
+
+
+const validateReview=(req,res,next)=>{
+    let {error}=reviewSchema.validate(req.body);
+    if(error){
+        let errMsg=error.details.map((el)=>el.message).join(",");
+        throw new ExpressError(400,errMsg);
+    }else{
+        next();
+    }
+}
 
 
 app.get("/",(req,res)=>{
@@ -115,7 +127,7 @@ app.delete("/listings/:id/delete",wrapAsync(async(req,res)=>{
 
 
 //Adding Reviews
-app.post("/listings/:id/reviews",async(req,res)=>{
+app.post("/listings/:id/reviews",validateReview,wrapAsync(async(req,res)=>{
     const newReview=new Review(req.body.review);
     let result=await newReview.save();
     console.log(result);
@@ -124,7 +136,7 @@ app.post("/listings/:id/reviews",async(req,res)=>{
     listing.reviews.push(result._id);
     console.log(listing); 
     res.redirect(`/listings/${id}`);
-});
+}));
 
 
 
