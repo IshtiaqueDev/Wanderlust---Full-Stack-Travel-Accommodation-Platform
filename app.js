@@ -81,10 +81,10 @@ app.get("/listings",wrapAsync(async(req,res)=>{
 //Show Route
 app.get("/listings/:id/",wrapAsync(async(req,res)=>{
     let id=req.params.id;
-    let list=await Listing.findById(id);
+    let listing=await Listing.findById(id).populate("reviews");
     //console.log(list);   
     // res.send(list) 
-    res.render("./listings/show.ejs",{list});
+    res.render("./listings/show.ejs",{listing});
 }))
 
 app.get("/listings/new/add",(req,res)=>{
@@ -130,11 +130,10 @@ app.delete("/listings/:id/delete",wrapAsync(async(req,res)=>{
 app.post("/listings/:id/reviews",validateReview,wrapAsync(async(req,res)=>{
     const newReview=new Review(req.body.review);
     let result=await newReview.save();
-    console.log(result);
     let id=req.params.id;
     let listing=await Listing.findById(id);
     listing.reviews.push(result._id);
-    console.log(listing); 
+    await listing.save();
     res.redirect(`/listings/${id}`);
 }));
 
