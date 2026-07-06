@@ -55,14 +55,13 @@ router.post("/",validateListing,wrapAsync(async(req,res,next)=>{
 //Update Route
 router.get("/:id/edit",validateListing,wrapAsync(async(req,res)=>{
     let id=req.params.id;
-    //console.log(id);
    let list= await Listing.find({_id:id});
-   if(!list){
-    console.log("Listing not found");
-   }
-   //console.log(list[0]);
+   if(!list || list.length==0){
+    req.flash("error","Listing Does not Exist!");
+    res.redirect("/listings");
+   }else{
     res.render("./listings/edit.ejs",{list});
-}))
+}}))
 
 //Edited Data (Updation)
 router.put("/:id/edits",wrapAsync(async(req,res)=>{
