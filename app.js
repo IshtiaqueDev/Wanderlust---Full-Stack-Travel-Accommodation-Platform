@@ -12,6 +12,9 @@ const listings=require("./routes/listing.js")
 const review=require("./routes/review.js")
 const session=require("express-session");
 const flash=require("connect-flash");
+const passport=require("passport");
+const LocalStrategy=require("passport-local");
+const User=require("./models/user.js");
 const port=8080; 
 app.use(express.static(path.join(__dirname,"/public")));
 app.engine("ejs",ejsMate);
@@ -44,14 +47,33 @@ app.get("/",(req,res)=>{
     res.send("Hi Iam Root!");
 })
 
+
 app.use(session(sessionOptions));
 app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
 app.use((req,res,next)=>{
     res.locals.success=req.flash("success");
     res.locals.error=req.flash("error");
     next();
 })
 
+
+app.get("/demouser",async(req,res)=>{
+    let fakeUser=new User({
+        email:"ali@gmail.com",
+        username:"Alistudent"
+    })
+
+   const registeredUser=await User.register(fakeUser,"helloPassword");
+    console.log(registeredUser);
+   res.send(registeredUser);
+})
 
 app.use("/listings",listings);
 app.use("/listings/:id/reviews",review);
