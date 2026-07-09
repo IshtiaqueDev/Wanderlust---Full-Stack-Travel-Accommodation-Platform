@@ -4,6 +4,7 @@ const {listingSchema}=require("../Schema.js")
 const ExpressError=require("../utils/ExpressError.js");
 const Listing=require("../models/Listing")
 const listings=require("../routes/listing.js")
+const {isLoggedIn}=require("../middleware.js");
 const router=express.Router();
 
 
@@ -36,15 +37,21 @@ router.get("/",wrapAsync(async(req,res)=>{
         //console.log(list);   
         // res.send(list) 
         res.render("./listings/show.ejs",{listing});
-    }
+    }   
     }))
 
-router.get("/new/add",(req,res)=>{
-    res.render("./listings/form.ejs");
+router.get("/new/add",isLoggedIn,(req,res)=>{
+    // console.log(req.user);
+    // if(!req.isAuthenticated()){
+    // req.flash("error","You must be logged in to Create a Listing!");
+    //  res.redirect("/login"); 
+    // }else{
+        res.render("./listings/form.ejs");
+    //}
 })
 
 //CREATE Route
-router.post("/",validateListing,wrapAsync(async(req,res,next)=>{
+router.post("/",validateListing,isLoggedIn,wrapAsync(async(req,res,next)=>{
      const newListing=new Listing(req.body.listing);
     await newListing.save();
     req.flash("success","New Listing Created!");
@@ -53,7 +60,7 @@ router.post("/",validateListing,wrapAsync(async(req,res,next)=>{
 
 
 //Update Route
-router.get("/:id/edit",validateListing,wrapAsync(async(req,res)=>{
+router.get("/:id/edit",isLoggedIn,validateListing,wrapAsync(async(req,res)=>{
     let id=req.params.id;
    let list= await Listing.find({_id:id});
    if(!list || list.length==0){
@@ -75,7 +82,7 @@ router.put("/:id/edits",wrapAsync(async(req,res)=>{
 
 
 //Delete Route
-router.delete("/:id/delete",wrapAsync(async(req,res)=>{
+router.delete("/:id/delete",isLoggedIn,wrapAsync(async(req,res)=>{
     let id=req.params.id;
     await Listing.findByIdAndDelete(id);
     req.flash("success","Listing Deleted Successfully!");

@@ -8,8 +8,9 @@ const ejsMate=require("ejs-mate");
 const ExpressError=require("./utils/ExpressError.js");
 const {listingSchema,reviewSchema}=require("./Schema.js")
 const Review=require("./models/review.js");
-const listings=require("./routes/listing.js")
-const review=require("./routes/review.js")
+const userRouter=require("./routes/user.js");
+const listingRouter=require("./routes/listing.js")
+const reviewRouter=require("./routes/review.js")
 const session=require("express-session");
 const flash=require("connect-flash");
 const passport=require("passport");
@@ -60,23 +61,25 @@ passport.deserializeUser(User.deserializeUser());
 app.use((req,res,next)=>{
     res.locals.success=req.flash("success");
     res.locals.error=req.flash("error");
+    res.locals.user=req.user;
     next();
 })
 
 
-app.get("/demouser",async(req,res)=>{
-    let fakeUser=new User({
-        email:"ali@gmail.com",
-        username:"Alistudent"
-    })
+// app.get("/demouser",async(req,res)=>{
+//     let fakeUser=new User({
+//         email:"ali@gmail.com",
+//         username:"Alistudent"
+//     })
 
-   const registeredUser=await User.register(fakeUser,"helloPassword");
-    console.log(registeredUser);
-   res.send(registeredUser);
-})
+//    const registeredUser=await User.register(fakeUser,"helloPassword");
+//     console.log(registeredUser);
+//    res.send(registeredUser);
+// })
 
-app.use("/listings",listings);
-app.use("/listings/:id/reviews",review);
+app.use("/listings",listingRouter);
+app.use("/listings/:id/reviews",reviewRouter);
+app.use("/",userRouter);
 
 
 
