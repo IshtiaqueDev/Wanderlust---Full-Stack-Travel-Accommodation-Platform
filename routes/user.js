@@ -4,6 +4,7 @@ const ExpressError=require("../utils/ExpressError.js");
 const router=express.Router();
 const passport=require("passport");
 const User=require("../models/user.js");
+const { saveRedirectedUrl } = require("../middleware.js");
 
 router.get("/signup",(req,res)=>{
     res.render("./users/signup.ejs");
@@ -33,15 +34,18 @@ router.get("/login",(req,res)=>{
     res.render("./users/login.ejs");
 })
 
-router.post("/login",
+router.post("/login",saveRedirectedUrl,
     passport.authenticate(
         "local",{
             failureRedirect:"/login",
             failureFlash:true
         }),async(req,res)=>{
     req.flash("success","Welcome to Wanderlust !");
+    if(!res.locals.redirectedUrl){
+    res.redirect(res.locals.redirectedUrl);
+    }else{
     res.redirect("/listings");
-})
+}})
 
 
 router.get("/logout",(req,res,next)=>{
