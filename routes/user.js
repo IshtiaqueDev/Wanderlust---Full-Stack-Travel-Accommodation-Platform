@@ -41,10 +41,10 @@ router.post("/login",saveRedirectedUrl,
             failureFlash:true
         }),async(req,res)=>{
     req.flash("success","Welcome to Wanderlust !");
-    if(!res.locals.redirectedUrl){
+    if(res.locals.redirectedUrl){
     res.redirect(res.locals.redirectedUrl);
     }else{
-    res.redirect("/listings");
+    res.redirect("/listings");  
 }})
 
 
