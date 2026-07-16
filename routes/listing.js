@@ -8,13 +8,17 @@ const {isLoggedIn, saveRedirectedUrl,isOwner,validateListing}=require("../middle
 const listingController=require("../controllers/listing.js");
 const router=express.Router();
 
-
-
-// Index Route 
-router.get("/",
+//Index Route
+router.route("/")
+    .get(
     wrapAsync(
         listingController.index
-    ));
+    ))
+    .post(
+    validateListing,
+    isLoggedIn,
+    wrapAsync(listingController.createListing));
+
 
 //Show Route
 router.get("/:id",
@@ -27,12 +31,6 @@ router.get("/new/add",
     isLoggedIn,
     listingController.formRendering
 )
-
-//CREATE Route
-router.post("/",
-    validateListing,
-    isLoggedIn,
-    wrapAsync(listingController.createListing));
 
 
 //Update Route

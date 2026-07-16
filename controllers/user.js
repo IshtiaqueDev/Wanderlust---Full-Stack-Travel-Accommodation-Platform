@@ -21,6 +21,10 @@ module.exports.signupRoute=async(req,res)=>{
 }
 
 
+module.exports.signupPageRender=(req,res)=>{
+    res.render("./users/signup.ejs");
+};
+
 module.exports.loginGet=(req,res)=>{
     res.render("./users/login.ejs");
 }
