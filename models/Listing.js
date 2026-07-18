@@ -17,12 +17,8 @@ const listingSchema=new mongoose.Schema({
     },description:{
         type:String,
         },image:{
-            filename:String,
-            url:{
-                type:String,
-                default:DEFAULT_IMAGE,
-                set: (v) => (!v || v === "") ? DEFAULT_IMAGE : v
-            },
+            url:String,
+            filename:String
      },price:Number,
     location:String,
     country:String,

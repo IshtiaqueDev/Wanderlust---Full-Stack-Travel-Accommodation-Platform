@@ -1,3 +1,7 @@
+if(process.env.NODE_ENV!="production"){
+    require("dotenv").config();
+}   
+
 const express=require("express");
 const app=express();
 const mongoose=require("mongoose");
@@ -17,12 +21,15 @@ const passport=require("passport");
 const LocalStrategy=require("passport-local");
 const User=require("./models/user.js");
 const port=8080; 
+
 app.use(express.static(path.join(__dirname,"/public")));
 app.engine("ejs",ejsMate);
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"))
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverride("_method"));
+
+
 main().then((res)=>{
     console.log("Connected with Database Successfully!");
 }).catch((err)=>{

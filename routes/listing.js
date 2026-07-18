@@ -7,6 +7,10 @@ const listings=require("../routes/listing.js")
 const {isLoggedIn, saveRedirectedUrl,isOwner,validateListing}=require("../middleware.js");
 const listingController=require("../controllers/listing.js");
 const router=express.Router();
+const multer  = require('multer')
+const {storage}=require("../cloudConfig.js");
+const upload = multer({storage});
+
 
 //Index Route
 router.route("/")
@@ -15,8 +19,8 @@ router.route("/")
         listingController.index
     ))
     .post(
-    validateListing,
     isLoggedIn,
+    upload.single("listing[image]"),
     wrapAsync(listingController.createListing));
 
 
@@ -44,6 +48,7 @@ router.get("/:id/edit",
 router.put("/:id/edits",
     isLoggedIn,
     isOwner,
+    upload.single("listing[image]"),
     wrapAsync(listingController.editedData));
 
 

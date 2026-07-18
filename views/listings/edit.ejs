@@ -1,6 +1,6 @@
 <% layout("./layouts/boilerplate.ejs")-%><body>
    
-    <form action="/listings/<%=list[0]._id%>/edits?_method=PUT" method="POST" novalidate class="needs-validation">
+    <form action="/listings/<%=list[0]._id%>/edits?_method=PUT" method="POST" novalidate class="needs-validation" enctype="multipart/form-data">
        <div class="row">
         <div class="col-8 offset-2"> 
         <div class="mb-3"> 
@@ -21,8 +21,8 @@
     </div>
        
        <div class="mb-3">
-        <label for="imgurl" class="form-label">Enter Image Url:</label>
-       <input id="imgurl" type="text" name="listing[img]" required placeholder="Enter image URL/Link" class="form-control" value="<%=list[0].image.url%>">
+        <label for="imgurl" class="form-label">Upload Image:</label>
+       <input id="imgurl" type="file" name="listing[img]" class="form-control">
        <div class="invalid-feedback">
         Please enter a valid image url !
     </div>
