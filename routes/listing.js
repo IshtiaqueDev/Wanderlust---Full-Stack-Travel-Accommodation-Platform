@@ -21,6 +21,7 @@ router.route("/")
     .post(
     isLoggedIn,
     upload.single("listing[image]"),
+    validateListing,
     wrapAsync(listingController.createListing));
 
 
@@ -49,6 +50,7 @@ router.put("/:id/edits",
     isLoggedIn,
     isOwner,
     upload.single("listing[image]"),
+    validateListing,
     wrapAsync(listingController.editedData));
 
 
