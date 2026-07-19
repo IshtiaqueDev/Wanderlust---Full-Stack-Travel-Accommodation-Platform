@@ -24,6 +24,17 @@ router.route("/")
     validateListing,
     wrapAsync(listingController.createListing));
 
+router.route("/search").
+get(wrapAsync(async(req,res)=>{
+    let {country}=req.query;
+    let allListings=await Listing.find(
+     {  country: {
+        $regex: country,
+        $options: "i"
+    }});
+    console.log(allListings);
+    res.render("./listings/searched.ejs",{allListings});
+}));
 
 //Show Route
 router.get("/:id",
@@ -59,6 +70,7 @@ router.delete("/:id/delete",
     isLoggedIn,
     isOwner
     ,wrapAsync(listingController.destroyListing));
+
 
 
     module.exports=router;
