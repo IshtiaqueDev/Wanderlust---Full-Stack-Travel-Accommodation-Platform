@@ -43,7 +43,22 @@ async function main() {
     await mongoose.connect(dbUrl);
 }
 
+
+const store=MongoStore.create({
+    mongoUrl:dbUrl,
+    crypto:{
+        secret:process.env.SECRET
+    },
+    touchAfter:24*3600
+})
+
+store.on("error",()=>{
+    console.log("Error in MONGO SESSION STORE");
+})
+
+
 let sessionOptions={
+    store,
     secret:"mysupersecretcode",
     resave:"false",
     saveUninitialized:true,
@@ -58,7 +73,6 @@ let sessionOptions={
 // app.get("/",(req,res)=>{
 //     res.send("Hi Iam Root!");
 // })
-
 
 app.use(session(sessionOptions));
 app.use(flash());
