@@ -16,6 +16,7 @@ const userRouter=require("./routes/user.js");
 const listingRouter=require("./routes/listing.js")
 const reviewRouter=require("./routes/review.js")
 const session=require("express-session");
+const {MongoStore} = require('connect-mongo');
 const flash=require("connect-flash");
 const passport=require("passport");
 const LocalStrategy=require("passport-local");
@@ -29,6 +30,9 @@ app.set("views",path.join(__dirname,"views"))
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverride("_method"));
 
+const dbUrl=process.env.MONGODB_URI;
+const dns = require("dns");
+dns.setServers(["8.8.8.8", "1.1.1.1"]);
 
 main().then((res)=>{
     console.log("Connected with Database Successfully!");
@@ -36,7 +40,7 @@ main().then((res)=>{
     console.log(err);
 });
 async function main() {
-    await mongoose.connect("mongodb://127.0.0.1:27017/wanderlust")
+    await mongoose.connect(dbUrl);
 }
 
 let sessionOptions={
@@ -47,8 +51,8 @@ let sessionOptions={
          expires:Date.now()+7*24*60*60*1000,
          maxAge:7*24*60*60*1000,
          httpOnly:true,
-    }
-};
+    },
+    };
 
 
 // app.get("/",(req,res)=>{

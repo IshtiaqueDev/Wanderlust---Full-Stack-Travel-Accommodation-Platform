@@ -1,13 +1,13 @@
 const mongoose=require("mongoose");
 const Review=require("./review.js");
-main().then((res)=>{
-    console.log("Connected with Database Successfully!");
-}).catch((err)=>{
-    console.log(err);
-});
-async function main() {
-    await mongoose.connect("mongodb://127.0.0.1:27017/wanderlust")
-}
+// main().then((res)=>{
+//     console.log("Connected with Database Successfully!");
+// }).catch((err)=>{
+//     console.log(err);
+// });
+// async function main() {
+//     await mongoose.connect("mongodb://127.0.0.1:27017/wanderlust")
+// }
 const DEFAULT_IMAGE = "https://plus.unsplash.com/premium_photo-1682377521697-bc598b52b08a?q=80&w=915";
 const listingSchema=new mongoose.Schema({
     title:{
