@@ -1,68 +1,111 @@
-# 🌍 WanderLust App
+# 🌍 WanderLust – Full-Stack Travel Accommodation Platform
 
-A full-stack listings web application built using **Node.js, Express.js, MongoDB, and EJS**.
+WanderLust is a modern full-stack web application inspired by Airbnb that allows users to explore, create, and manage travel accommodations with a clean and intuitive interface. Built using the **MERN backend ecosystem** with **Express.js, MongoDB, and EJS**, the project demonstrates real-world web development concepts including authentication, CRUD operations, image uploads, reviews, and secure session management.
 
-This project is currently **under active development 🚧** and I am continuously adding new features, improving functionality, and refining the overall structure.
-
----
-
-## 🚀 Project Status
-
-🟡 In Progress (Ongoing Project)
-
-- Core CRUD functionality is implemented
-- Database integration with MongoDB is working
-- Server-side rendering using EJS is set up
-- UI and additional features are still being improved
+The application is designed to provide a seamless experience for travelers searching for unique places to stay while allowing property owners to showcase and manage their listings effortlessly.
 
 ---
 
-## ⚙️ Tech Stack
+## ✨ Features
 
-- Node.js
-- Express.js
-- MongoDB & Mongoose
-- EJS Templates
-- HTML, CSS, JavaScript
-
----
-
-## ✨ Current Features
-
-- Create, Read, Update, Delete listings
-- Dynamic routing with Express
-- MongoDB data storage using Mongoose
-- Default image handling for listings
-- Basic server-side rendered UI
+* 🏡 Browse travel accommodation listings
+* ➕ Create, edit, and delete listings
+* 🔐 User authentication & authorization
+* 👤 Secure login and registration using Passport.js
+* ⭐ Review and rating system
+* 📷 Image upload with Cloudinary
+* 🗺️ Interactive location integration with Mapbox
+* 🔍 Search listings by country
+* 📱 Responsive UI built with Bootstrap
+* 🛡️ Server-side validation using Joi
+* ⚡ Flash messages and session management
+* 📂 RESTful routing following the MVC architecture
 
 ---
 
-## 🚧 Work in Progress
+## 🛠️ Tech Stack
 
-- UI/UX improvements
-- Authentication system
-- Image upload integration
-- Reviews & rating system
-- Better error handling and validation
+**Frontend**
+
+* HTML5
+* CSS3
+* Bootstrap 5
+* EJS
+
+**Backend**
+
+* Node.js
+* Express.js
+
+**Database**
+
+* MongoDB
+* Mongoose
+
+**Authentication**
+
+* Passport.js
+* Express Session
+
+**Cloud Services**
+
+* Cloudinary
+* Mapbox API
+
+**Other Tools**
+
+* Joi
+* Method Override
+* Connect Flash
+* Multer
+* Dotenv
 
 ---
 
-## 📌 Project Goal
+## 📸 Screenshots
 
-The goal of this project is to build a real-world **Airbnb-style listings platform** while improving my full-stack development skills.
-
----
-
-## 🔥 Status Note
-
-This project is actively evolving — new features and improvements are being added regularly.
+> Screenshots will be added here.
 
 ---
 
-## 🙌 Acknowledgement
+## 🚀 Learning Outcomes
 
-Special thanks to **Shradha Khapra Ma’am** for guidance during my learning journey.
+This project helped me gain practical experience with:
+
+* Building scalable Express applications using MVC architecture
+* Designing MongoDB schemas and relationships
+* Authentication and authorization with Passport.js
+* File uploads using Multer and Cloudinary
+* Session and cookie management
+* Form validation using Joi
+* RESTful API design
+* Error handling and middleware
+* Deploying full-stack applications
 
 ---
 
-⭐ Stay tuned for updates as the project grows!
+## 📌 Future Improvements
+
+* ❤️ Wishlist/Favorites
+* 💳 Booking & Payment Integration
+* 📅 Availability Calendar
+* 🌐 Advanced Search & Filters
+* 💬 Real-time Chat
+* 📍 Nearby Places Recommendation
+* 📊 Admin Dashboard
+
+---
+
+## 🤝 Contributing
+
+Contributions, suggestions, and feedback are always welcome. Feel free to fork the repository, open issues, or submit pull requests.
+
+---
+
+## 📄 License
+
+This project is developed for learning purposes and portfolio demonstration.
+
+---
+
+### ⭐ If you found this project useful, don't forget to give it a star!
