@@ -8,11 +8,11 @@ The application is designed to provide a seamless experience for travelers searc
  
 ## ✨ Features
 
-* 🏡 Browse travel accommodation listings
-* ➕ Create, edit, and delete listings
-* 🔐 User authentication & authorization
-* 👤 Secure login and registration using Passport.js
-* ⭐ Review and rating system
+* Browse travel accommodation listings
+* Create, edit, and delete listings
+* User authentication & authorization
+* Secure login and registration using Passport.js
+* Review and rating system
 * 📷 Image upload with Cloudinary
 * 🗺️ Interactive location integration with Mapbox
 * 🔍 Search listings by country
